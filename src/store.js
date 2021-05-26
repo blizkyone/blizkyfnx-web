@@ -12,8 +12,12 @@ import {
    userUpdateReducer,
    usernameValidationReducer,
 } from './reducers/userReducers'
+import { serviceListReducer } from './reducers/serviceReducer'
+import { searchLocationReducer } from './reducers/searchReducer'
 
 const reducer = combineReducers({
+   searchLocation: searchLocationReducer,
+   serviceList: serviceListReducer,
    userLogin: userLoginReducer,
    userLogout: userLogoutReducer,
    userRegister: userRegisterReducer,
@@ -29,10 +33,25 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
    ? JSON.parse(localStorage.getItem('userInfo'))
    : null
 
+const servicesFromStorage = localStorage.getItem('services')
+   ? JSON.parse(localStorage.getItem('services'))
+   : []
+
+const categoriesFromStorage = localStorage.getItem('categories')
+   ? JSON.parse(localStorage.getItem('categories'))
+   : []
+
+const searchLocationFromStorage = localStorage.getItem('region')
+   ? JSON.parse(localStorage.getItem('region'))
+   : { city: 'Merida', region: 'Yucatan', country: 'Mexico' }
+
 const initialState = {
-   // productList: inventoryFromStorage,
+   serviceList: {
+      services: servicesFromStorage,
+      categories: categoriesFromStorage,
+   },
    userLogin: { userInfo: userInfoFromStorage },
-   // placeCoordinates: { coordinates: { lat: 20.9670154, lng: -89.6242833 } },
+   searchLocation: searchLocationFromStorage,
 }
 
 const middleware = [thunk]

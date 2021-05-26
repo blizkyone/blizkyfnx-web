@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomeScreen from './screens/HomeScreen'
+import SetLocationScreen from './screens/SetLocationScreen'
 
 function App() {
    return (
@@ -12,6 +13,11 @@ function App() {
          <Header />
          <main className='py-3'>
             <Container>
+               <Route
+                  path='/set-location'
+                  component={SetLocationScreen}
+                  exact
+               />
                <Route path='/' component={HomeScreen} exact />
             </Container>
          </main>
