@@ -1,27 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getServiceList } from '../actions/serviceActions'
 
-const useServiceListFilterHook = (
-   serviceList = [],
-   categoryList = [],
-   value = ''
-) => {
+const useServiceListFilterHook = (value = '') => {
    const [filteredServices, setFilteredServices] = useState([])
    const [markers, setMarkers] = useState([])
+
+   const dispatch = useDispatch()
+
+   const { services, categories, loading, error } = useSelector(
+      (state) => state.serviceList
+   )
+
+   useEffect(() => {
+      dispatch(getServiceList())
+   }, [])
 
    useEffect(() => {
       let arr = []
       let markerArr = []
 
       if (value === '') {
-         categoryList.forEach((category) => {
-            const serv = serviceList.filter((ser) =>
-               ser.category.includes(category)
+         categories.forEach((category) => {
+            const serv = services.filter((ser) =>
+               ser.categories.includes(category)
             )
             arr.push({ category, serv })
          })
 
          setFilteredServices(arr)
-         setMarkers(serviceList.filter((item) => !!item.lat))
+         setMarkers(services.filter((item) => !!item.lat))
       } else {
          const filterServices = (arr, query) => {
             return arr.filter(
@@ -41,13 +49,13 @@ const useServiceListFilterHook = (
             )
          }
 
-         const filteredSer = filterServices(serviceList, value)
-         const negFilteredCat = antiFilterItems(categoryList, value)
-         const filteredCat = filterItems(categoryList, value)
+         const filteredSer = filterServices(services, value)
+         const negFilteredCat = antiFilterItems(categories, value)
+         const filteredCat = filterItems(categories, value)
 
          negFilteredCat.forEach((category) => {
             const serv = filteredSer.filter((ser) =>
-               ser.category.includes(category)
+               ser.categories.includes(category)
             )
             if (serv.length !== 0) {
                arr.push({ category, serv })
@@ -60,8 +68,8 @@ const useServiceListFilterHook = (
          })
 
          filteredCat.forEach((category) => {
-            const serv = serviceList.filter((ser) =>
-               ser.category.includes(category)
+            const serv = services.filter((ser) =>
+               ser.categories.includes(category)
             )
             if (serv.length !== 0) {
                arr.push({ category, serv })
@@ -78,9 +86,9 @@ const useServiceListFilterHook = (
          setFilteredServices(arr)
          setMarkers([...new Set(markerArr)])
       }
-   }, [value])
+   }, [value, services, categories])
 
-   return { filteredServices, markers }
+   return { filteredServices, markers, loading, error }
 }
 
 export default useServiceListFilterHook
