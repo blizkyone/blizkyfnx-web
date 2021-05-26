@@ -31,7 +31,6 @@ import {
    USERNAME_VALIDATION_SUCCESS,
    USERNAME_VALIDATION_FAIL,
 } from '../constants/userConstants'
-// import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
 export const login = (email, password) => async (dispatch) => {
    try {
@@ -90,9 +89,6 @@ export const logout = () => async (dispatch, getState) => {
       dispatch({ type: USER_LOGOUT_SUCCESS, payload: data })
 
       localStorage.removeItem('userInfo')
-      localStorage.removeItem('cartItems')
-      localStorage.removeItem('shippingAddress')
-      localStorage.removeItem('paymentMethod')
       dispatch({ type: USER_LOGOUT })
       dispatch({ type: USER_DETAILS_RESET })
       // dispatch({ type: ORDER_LIST_MY_RESET })
@@ -108,9 +104,6 @@ export const logout = () => async (dispatch, getState) => {
       })
 
       localStorage.removeItem('userInfo')
-      localStorage.removeItem('cartItems')
-      localStorage.removeItem('shippingAddress')
-      localStorage.removeItem('paymentMethod')
       dispatch({ type: USER_LOGOUT })
       dispatch({ type: USER_DETAILS_RESET })
       // dispatch({ type: ORDER_LIST_MY_RESET })
@@ -144,9 +137,7 @@ export const validateUsername = (username) => async (dispatch) => {
    }
 }
 
-export const register = ({ name, username, email, password }) => async (
-   dispatch
-) => {
+export const register = (postData) => async (dispatch) => {
    try {
       dispatch({
          type: USER_REGISTER_REQUEST,
@@ -157,10 +148,10 @@ export const register = ({ name, username, email, password }) => async (
             'Content-Type': 'application/json',
          },
       }
-
+      console.log(postData)
       const { data } = await axios.post(
          `${process.env.REACT_APP_API_URL}/users`,
-         { name, username, email, password },
+         postData,
          config
       )
 

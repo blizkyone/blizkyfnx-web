@@ -6,7 +6,7 @@ const DirectoryMap = ({ markers, mapCenter }) => {
    return (
       <GoogleMapReact
          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}
-         defaultCenter={mapCenter}
+         // defaultCenter={mapCenter}
          center={mapCenter}
          defaultZoom={12}
       >

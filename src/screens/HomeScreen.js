@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import ServicesListFilter from '../components/homeScreen/ServicesListFilter'
 import ServiceDisplay from '../components/homeScreen/ServiceDisplay'
 import useServiceListFilterHook from '../hooks/useServiceListFilterHook'
-
-import { Spinner, Alert, Row, Col } from 'react-bootstrap'
+import Loader from '../components/Loader'
+import { Alert, Row, Col } from 'react-bootstrap'
 
 const HomeScreen = () => {
    const [mapCenter, setMapCenter] = useState({
@@ -19,12 +19,8 @@ const HomeScreen = () => {
    const { filteredServices, markers, loading, error } =
       useServiceListFilterHook(value)
 
-   // useEffect(() => {
-   //    alert(`${mapCenter.lat}`)
-   // }, [mapCenter])
-
    return loading ? (
-      <Spinner animation='border' />
+      <Loader animation='border' />
    ) : error ? (
       <Alert variant='danger'>{error}</Alert>
    ) : (

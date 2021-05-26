@@ -10,7 +10,7 @@ import {
    Button,
 } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { logout } from '../actions/userActions'
+import { logout, login } from '../actions/userActions'
 
 const Header = () => {
    const [email, setEmail] = useState('')
@@ -26,8 +26,10 @@ const Header = () => {
       dispatch(logout())
    }
 
-   const handleSubmit = () => {
-      alert('Submitted')
+   const handleSubmit = (e) => {
+      e.preventDefault()
+      if (!email || !password) return
+      dispatch(login(email, password))
    }
 
    return (
@@ -58,7 +60,7 @@ const Header = () => {
                      onSubmit={handleSubmit}
                      className='d-flex flex-row align-items-center'
                   >
-                     <Form.Group controlId='email' className='mx-1'>
+                     <Form.Group controlId='emailheader' className='mx-1'>
                         <Form.Control
                            type='email'
                            placeholder='Enter email'
@@ -67,7 +69,7 @@ const Header = () => {
                         ></Form.Control>
                      </Form.Group>
 
-                     <Form.Group controlId='password' className='mx-1'>
+                     <Form.Group controlId='passwordheader' className='mx-1'>
                         <Form.Control
                            type='password'
                            placeholder='Enter password'
@@ -87,9 +89,7 @@ const Header = () => {
                      </Button>
 
                      <LinkContainer to='/login'>
-                        <Nav.Link>
-                           <i className='fas fa-user'></i> Sign up
-                        </Nav.Link>
+                        <Nav.Link>Sign up</Nav.Link>
                      </LinkContainer>
                   </Form>
                )}

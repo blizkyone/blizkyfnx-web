@@ -50,6 +50,7 @@ const ServicesListFilter = ({
                   action
                   as='li'
                   onClick={(_) => setValue(group.category)}
+                  style={{ fontWeight: 600 }}
                >
                   {group.category}
                </ListGroup.Item>

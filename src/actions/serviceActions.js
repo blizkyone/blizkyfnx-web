@@ -5,6 +5,7 @@ import {
    SERVICE_LIST_RESET,
 } from '../constants/serviceConstants'
 import axios from 'axios'
+import { logout } from '../actions/userActions'
 
 export const getServiceList = () => async (dispatch, getState) => {
    try {
@@ -17,18 +18,16 @@ export const getServiceList = () => async (dispatch, getState) => {
          searchLocation: { country, city, region },
       } = getState()
 
-      // const config =
-      //    userInfo && userInfo.token
-      //       ? {
-      //            headers: {
-      //               Authorization: `Bearer ${userInfo.token}`,
-      //            },
-      //         }
-      //       : {
-      //            headers: {},
-      //         }
-
-      const config = { headers: {} }
+      const config =
+         userInfo && userInfo.token
+            ? {
+                 headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                 },
+              }
+            : {
+                 headers: {},
+              }
 
       const { data } = await axios.get(
          `${process.env.REACT_APP_API_URL}/services/?country=${country}&city=${city}&state=${region}`,
@@ -50,7 +49,7 @@ export const getServiceList = () => async (dispatch, getState) => {
          message === 'User not found'
       ) {
          console.log('logout')
-         // dispatch(logout())
+         dispatch(logout())
       }
       dispatch({
          type: SERVICE_LIST_FAIL,

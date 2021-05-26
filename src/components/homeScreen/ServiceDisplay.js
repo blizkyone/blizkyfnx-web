@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row } from 'react-bootstrap'
+import { Row, Card } from 'react-bootstrap'
 import DirectoryMap from './DirectoryMap'
 import ServiceInfo from './ServiceInfo'
 
@@ -8,7 +8,9 @@ const ServiceDisplay = ({ mapCenter, markers, selectedService }) => {
       <>
          {selectedService && (
             <Row>
-               <ServiceInfo selectedService={selectedService} />
+               <Card className='p-3'>
+                  <ServiceInfo selectedService={selectedService} />
+               </Card>
             </Row>
          )}
          <Row style={{ height: '400px' }}>

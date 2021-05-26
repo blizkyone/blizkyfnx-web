@@ -8,13 +8,15 @@ const useServiceListFilterHook = (value = '') => {
 
    const dispatch = useDispatch()
 
+   const { userInfo } = useSelector((state) => state.userLogin)
+
    const { services, categories, loading, error } = useSelector(
       (state) => state.serviceList
    )
 
    useEffect(() => {
       dispatch(getServiceList())
-   }, [])
+   }, [dispatch, userInfo])
 
    useEffect(() => {
       let arr = []
