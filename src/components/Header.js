@@ -45,15 +45,15 @@ const Header = () => {
             >
                {userInfo ? (
                   <NavDropdown title={userInfo.name} id='username' className=''>
-                     <LinkContainer to='/dashboard'>
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                     </LinkContainer>
-                     <LinkContainer to='/payment-methods'>
-                        <NavDropdown.Item>Metodos de pago</NavDropdown.Item>
+                     <LinkContainer to='/mi-perfil'>
+                        <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
                      </LinkContainer>
                      <NavDropdown.Item onClick={logoutHandler}>
                         Logout
                      </NavDropdown.Item>
+                     <LinkContainer to='/crear-negocio'>
+                        <NavDropdown.Item>Crear Negocio</NavDropdown.Item>
+                     </LinkContainer>
                   </NavDropdown>
                ) : (
                   <Form

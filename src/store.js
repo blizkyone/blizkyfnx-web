@@ -5,7 +5,7 @@ import {
    userLoginReducer,
    userLogoutReducer,
    userRegisterReducer,
-   userDetailsReducer,
+   userMyProfileReducer,
    userUpdateProfileReducer,
    userListReducer,
    userDeleteReducer,
@@ -14,15 +14,21 @@ import {
 } from './reducers/userReducers'
 import { serviceListReducer } from './reducers/serviceReducer'
 import { searchLocationReducer } from './reducers/searchReducer'
+import {
+   placeAutocompleteReducer,
+   locationAddressReducer,
+} from './reducers/placesReducers'
 
 const reducer = combineReducers({
+   placeAutocomplete: placeAutocompleteReducer,
+   placeAddress: locationAddressReducer,
    searchLocation: searchLocationReducer,
    serviceList: serviceListReducer,
    userLogin: userLoginReducer,
    userLogout: userLogoutReducer,
    userRegister: userRegisterReducer,
    usernameValidation: usernameValidationReducer,
-   userDetails: userDetailsReducer,
+   userMyProfile: userMyProfileReducer,
    userUpdateProfile: userUpdateProfileReducer,
    userList: userListReducer,
    userDelete: userDeleteReducer,

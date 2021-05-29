@@ -1,8 +1,8 @@
 import {
-   USER_DETAILS_FAIL,
-   USER_DETAILS_REQUEST,
-   USER_DETAILS_RESET,
-   USER_DETAILS_SUCCESS,
+   USER_MY_PROFILE_FAIL,
+   USER_MY_PROFILE_REQUEST,
+   USER_MY_PROFILE_RESET,
+   USER_MY_PROFILE_SUCCESS,
    USER_LIST_REQUEST,
    USER_LIST_SUCCESS,
    USER_LIST_FAIL,
@@ -90,16 +90,42 @@ export const userRegisterReducer = (state = {}, action) => {
    }
 }
 
-export const userDetailsReducer = (state = { user: {} }, action) => {
+export const userMyProfileReducer = (
+   state = {
+      profile: {
+         services: [],
+         friends: [],
+         recoServices: [],
+         antirecoServices: [],
+      },
+      recoCategories: [],
+      antirecoCategories: [],
+   },
+   action
+) => {
    switch (action.type) {
-      case USER_DETAILS_REQUEST:
+      case USER_MY_PROFILE_REQUEST:
          return { ...state, loading: true }
-      case USER_DETAILS_SUCCESS:
-         return { loading: false, user: action.payload }
-      case USER_DETAILS_FAIL:
+      case USER_MY_PROFILE_SUCCESS:
+         return {
+            loading: false,
+            profile: action.payload.profile,
+            recoCategories: action.payload.recoCategories,
+            antirecoCategories: action.payload.antirecoCategories,
+         }
+      case USER_MY_PROFILE_FAIL:
          return { loading: false, error: action.payload }
-      case USER_DETAILS_RESET:
-         return { user: {} }
+      case USER_MY_PROFILE_RESET:
+         return {
+            profile: {
+               services: [],
+               friends: [],
+               recoServices: [],
+               antirecoServices: [],
+            },
+            recoCategories: [],
+            antirecoCategories: [],
+         }
       default:
          return state
    }

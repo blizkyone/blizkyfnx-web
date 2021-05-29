@@ -1,8 +1,9 @@
 import axios from 'axios'
 import {
-   USER_DETAILS_FAIL,
-   USER_DETAILS_REQUEST,
-   USER_DETAILS_SUCCESS,
+   USER_MY_PROFILE_FAIL,
+   USER_MY_PROFILE_REQUEST,
+   USER_MY_PROFILE_SUCCESS,
+   USER_MY_PROFILE_RESET,
    USER_LOGIN_FAIL,
    USER_LOGIN_REQUEST,
    USER_LOGIN_SUCCESS,
@@ -16,7 +17,6 @@ import {
    USER_UPDATE_PROFILE_FAIL,
    USER_UPDATE_PROFILE_REQUEST,
    USER_UPDATE_PROFILE_SUCCESS,
-   USER_DETAILS_RESET,
    USER_LIST_FAIL,
    USER_LIST_SUCCESS,
    USER_LIST_REQUEST,
@@ -90,7 +90,7 @@ export const logout = () => async (dispatch, getState) => {
 
       localStorage.removeItem('userInfo')
       dispatch({ type: USER_LOGOUT })
-      dispatch({ type: USER_DETAILS_RESET })
+      dispatch({ type: USER_MY_PROFILE_RESET })
       // dispatch({ type: ORDER_LIST_MY_RESET })
       dispatch({ type: USER_LIST_RESET })
       document.location.href = '/login'
@@ -105,7 +105,7 @@ export const logout = () => async (dispatch, getState) => {
 
       localStorage.removeItem('userInfo')
       dispatch({ type: USER_LOGOUT })
-      dispatch({ type: USER_DETAILS_RESET })
+      dispatch({ type: USER_MY_PROFILE_RESET })
       // dispatch({ type: ORDER_LIST_MY_RESET })
       dispatch({ type: USER_LIST_RESET })
       document.location.href = '/login'
@@ -177,10 +177,10 @@ export const register = (postData) => async (dispatch) => {
    }
 }
 
-export const getUserDetails = (id) => async (dispatch, getState) => {
+export const getMyProfile = () => async (dispatch, getState) => {
    try {
       dispatch({
-         type: USER_DETAILS_REQUEST,
+         type: USER_MY_PROFILE_REQUEST,
       })
 
       const {
@@ -194,12 +194,12 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       }
 
       const { data } = await axios.get(
-         `${process.env.REACT_APP_API_URL}/users/${id}`,
+         `${process.env.REACT_APP_API_URL}/users/`,
          config
       )
 
       dispatch({
-         type: USER_DETAILS_SUCCESS,
+         type: USER_MY_PROFILE_SUCCESS,
          payload: data,
       })
    } catch (error) {
@@ -211,7 +211,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
          dispatch(logout())
       }
       dispatch({
-         type: USER_DETAILS_FAIL,
+         type: USER_MY_PROFILE_FAIL,
          payload: message,
       })
    }
@@ -359,9 +359,9 @@ export const updateUser = (user) => async (dispatch, getState) => {
 
       dispatch({ type: USER_UPDATE_SUCCESS })
 
-      dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
+      dispatch({ type: USER_MY_PROFILE_SUCCESS, payload: data })
 
-      dispatch({ type: USER_DETAILS_RESET })
+      dispatch({ type: USER_MY_PROFILE_RESET })
    } catch (error) {
       const message =
          error.response && error.response.data.message
