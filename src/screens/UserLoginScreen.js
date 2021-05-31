@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
 
@@ -33,7 +32,6 @@ const LoginScreen = ({ location, history }) => {
       <FormContainer>
          <h1>Sign In</h1>
          {error && <Message variant='danger'>{error}</Message>}
-         {loading && <Loader />}
          <Form onSubmit={submitHandler}>
             <Form.Group controlId='email'>
                <Form.Label>Email Address</Form.Label>
@@ -56,7 +54,7 @@ const LoginScreen = ({ location, history }) => {
             </Form.Group>
 
             <Button type='submit' variant='primary'>
-               Sign In
+               {loading ? <Spinner animation='border' size='sm' /> : 'Sign In'}
             </Button>
          </Form>
 

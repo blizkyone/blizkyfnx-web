@@ -31,7 +31,23 @@ import {
    USERNAME_VALIDATION_REQUEST,
    USERNAME_VALIDATION_SUCCESS,
    USERNAME_VALIDATION_FAIL,
+   USER_CONNECT_FAIL,
+   USER_CONNECT_REQUEST,
+   USER_CONNECT_SUCCESS,
 } from '../constants/userConstants'
+
+export const userConnectReducer = (state = {}, action) => {
+   switch (action.type) {
+      case USER_CONNECT_REQUEST:
+         return { loading: true }
+      case USER_CONNECT_SUCCESS:
+         return { loading: false, success: true }
+      case USER_CONNECT_FAIL:
+         return { loading: false, error: action.payload }
+      default:
+         return state
+   }
+}
 
 export const userLoginReducer = (state = {}, action) => {
    switch (action.type) {

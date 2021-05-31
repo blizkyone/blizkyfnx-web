@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Card } from 'react-bootstrap'
 import DirectoryMap from './DirectoryMap'
-import ServiceInfo from './ServiceInfo'
+import ServiceInfo from '../ServiceInfo'
 
 const ServiceDisplay = ({ mapCenter, markers, selectedService }) => {
    return (

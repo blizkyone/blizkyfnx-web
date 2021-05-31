@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import GoogleMapReact from 'google-map-react'
 import { useDispatch, useSelector } from 'react-redux'
 import MapSearchBar from '../MapSearchBar'
-import { Form, Button, Card } from 'react-bootstrap'
+import { Form, Button, Card, Spinner } from 'react-bootstrap'
 import { getAddress } from '../../actions/placesActions.js'
 
-const SetLocationScreen = () => {
+const SetLocationScreen = ({ setStage, setServiceInfo }) => {
    const [mapCenter, setMapCenter] = useState({
       lat: 20.9670154,
       lng: -89.6242833,
@@ -46,7 +46,19 @@ const SetLocationScreen = () => {
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      alert('submit')
+      if (marker && address) {
+         setServiceInfo({
+            lat: marker.lat,
+            lng: marker.lng,
+            address: {
+               street_address: address,
+               city: 'Merida',
+               state: 'Yucatan',
+               country: 'Mexico',
+            },
+         })
+         setStage(1)
+      }
    }
 
    return (
@@ -110,8 +122,15 @@ const SetLocationScreen = () => {
                   Requerido
                </Form.Control.Feedback>
             </Form.Group>
-
-            <Button type='submit'>Siguiente</Button>
+            {marker && (
+               <Button type='submit'>
+                  {loading ? (
+                     <Spinner animation='border' size='sm' />
+                  ) : (
+                     'Siguiente'
+                  )}
+               </Button>
+            )}
          </Form>
       </>
    )

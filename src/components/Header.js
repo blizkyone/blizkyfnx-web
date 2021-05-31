@@ -88,7 +88,7 @@ const Header = () => {
                         Sign In
                      </Button>
 
-                     <LinkContainer to='/login'>
+                     <LinkContainer to='/register'>
                         <Nav.Link>Sign up</Nav.Link>
                      </LinkContainer>
                   </Form>

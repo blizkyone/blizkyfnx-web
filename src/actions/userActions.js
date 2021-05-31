@@ -30,7 +30,49 @@ import {
    USERNAME_VALIDATION_REQUEST,
    USERNAME_VALIDATION_SUCCESS,
    USERNAME_VALIDATION_FAIL,
+   USER_CONNECT_FAIL,
+   USER_CONNECT_SUCCESS,
+   USER_CONNECT_REQUEST,
 } from '../constants/userConstants'
+
+export const connectWith =
+   (id, reject = undefined) =>
+   async (dispatch, getState) => {
+      try {
+         dispatch({
+            type: USER_CONNECT_REQUEST,
+         })
+
+         const {
+            userLogin: { userInfo },
+         } = getState()
+
+         const config = {
+            headers: {
+               Authorization: `Bearer ${userInfo.token}`,
+               'Content-Type': 'application/json',
+            },
+         }
+
+         const { data } = await axios.post(
+            `${process.env.REACT_APP_API_URL}/users/${id}/connect`,
+            { reject },
+            config
+         )
+
+         dispatch({
+            type: USER_CONNECT_SUCCESS,
+         })
+      } catch (error) {
+         dispatch({
+            type: USER_CONNECT_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
+      }
+   }
 
 export const login = (email, password) => async (dispatch) => {
    try {
@@ -93,7 +135,7 @@ export const logout = () => async (dispatch, getState) => {
       dispatch({ type: USER_MY_PROFILE_RESET })
       // dispatch({ type: ORDER_LIST_MY_RESET })
       dispatch({ type: USER_LIST_RESET })
-      document.location.href = '/login'
+      document.location.href = '/'
    } catch (error) {
       dispatch({
          type: USER_LOGOUT_FAIL,

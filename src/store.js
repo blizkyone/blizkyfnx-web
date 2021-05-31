@@ -11,8 +11,16 @@ import {
    userDeleteReducer,
    userUpdateReducer,
    usernameValidationReducer,
+   userConnectReducer,
 } from './reducers/userReducers'
-import { serviceListReducer } from './reducers/serviceReducer'
+import {
+   serviceListReducer,
+   serviceCategoriesReducer,
+   serviceNewCategoryReducer,
+   serviceCreateReducer,
+   serviceRecommendReducer,
+   serviceProfileReducer,
+} from './reducers/serviceReducer'
 import { searchLocationReducer } from './reducers/searchReducer'
 import {
    placeAutocompleteReducer,
@@ -23,7 +31,12 @@ const reducer = combineReducers({
    placeAutocomplete: placeAutocompleteReducer,
    placeAddress: locationAddressReducer,
    searchLocation: searchLocationReducer,
+   serviceProfile: serviceProfileReducer,
+   serviceRecommend: serviceRecommendReducer,
+   serviceCreate: serviceCreateReducer,
+   serviceNewCategory: serviceNewCategoryReducer,
    serviceList: serviceListReducer,
+   serviceCategories: serviceCategoriesReducer,
    userLogin: userLoginReducer,
    userLogout: userLogoutReducer,
    userRegister: userRegisterReducer,
@@ -33,6 +46,7 @@ const reducer = combineReducers({
    userList: userListReducer,
    userDelete: userDeleteReducer,
    userUpdate: userUpdateReducer,
+   userConnect: userConnectReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

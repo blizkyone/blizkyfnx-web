@@ -8,7 +8,7 @@ import { Alert, Row, Col, Card, ListGroup } from 'react-bootstrap'
 import { getMyProfile } from '../actions/userActions'
 import { USER_MY_PROFILE_RESET } from '../constants/userConstants'
 
-const UserProfileScreen = () => {
+const UserProfileScreen = ({ history }) => {
    const [mapCenter, setMapCenter] = useState({
       lat: 20.9670154,
       lng: -89.6242833,
@@ -25,6 +25,8 @@ const UserProfileScreen = () => {
       (state) => state.userMyProfile
    )
 
+   const { service } = useSelector((state) => state.serviceRecommend)
+
    // console.log(profile.services)
 
    const { filteredServices, markers: listMarkers } = useCrazyShit(
@@ -34,11 +36,17 @@ const UserProfileScreen = () => {
    )
 
    useEffect(() => {
+      if (!userInfo) {
+         history.push('/')
+      }
+   }, [userInfo, history])
+
+   useEffect(() => {
       dispatch(getMyProfile())
       return () => {
          dispatch({ type: USER_MY_PROFILE_RESET })
       }
-   }, [dispatch, userInfo])
+   }, [dispatch, userInfo, service])
 
    //To add my services markers to the map
    const [markers, setMarkers] = useState([])
@@ -70,7 +78,7 @@ const UserProfileScreen = () => {
                <Row>
                   {profile.friends.length === 0 && (
                      <Col>
-                        <p>{`Amigos: ${profile.friends.length}`}</p>
+                        <p>{`Conexiones: ${profile.friends.length}`}</p>
                      </Col>
                   )}
                   <Col></Col>
@@ -83,7 +91,7 @@ const UserProfileScreen = () => {
                      {profile.services.map((service) => (
                         <ListGroup.Item
                            action
-                           key={service._id}
+                           key={service.service._id}
                            onClick={(_) => handleClickService(service.service)}
                         >
                            <p className='m-0' style={{ fontWeight: 600 }}>
