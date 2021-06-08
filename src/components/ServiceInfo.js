@@ -5,7 +5,7 @@ import { recommendService, getServiceProfile } from '../actions/serviceActions'
 import Message from './Message'
 import ButtonDisplay from './ButtonDisplay'
 
-const ServiceInfo = ({ selectedService }) => {
+const ServiceInfo = ({ selectedService, history }) => {
    const [message, setMessage] = useState('')
 
    const dispatch = useDispatch()
@@ -83,11 +83,17 @@ const ServiceInfo = ({ selectedService }) => {
                >
                   <div>
                      <p className='m-1'>{`${user.position}:`}</p>
-                     <p className='m-1' style={{ color: 'blue' }}>
+                     <p
+                        className='m-1'
+                        style={{ color: 'blue' }}
+                        onClick={(_) =>
+                           history.push(`/user/${user.user._id}/profile`)
+                        }
+                     >
                         {`${user.user.name} ${user.user.familyName}`}
                      </p>
                   </div>
-                  {userInfo._id !== user.user._id && (
+                  {userInfo && userInfo._id !== user.user._id && (
                      <ButtonDisplay user={user} userInfo={userInfo} />
                   )}
                </Col>

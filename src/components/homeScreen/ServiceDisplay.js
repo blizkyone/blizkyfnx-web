@@ -3,13 +3,22 @@ import { Row, Card } from 'react-bootstrap'
 import DirectoryMap from './DirectoryMap'
 import ServiceInfo from '../ServiceInfo'
 
-const ServiceDisplay = ({ mapCenter, markers, selectedService }) => {
+const ServiceDisplay = ({
+   mapCenter,
+   markers,
+   selectedService,
+   history,
+   match,
+}) => {
    return (
       <>
          {selectedService && (
             <Row>
                <Card className='p-3'>
-                  <ServiceInfo selectedService={selectedService} />
+                  <ServiceInfo
+                     selectedService={selectedService}
+                     history={history}
+                  />
                </Card>
             </Row>
          )}

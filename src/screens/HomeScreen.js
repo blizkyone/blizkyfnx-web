@@ -5,7 +5,7 @@ import useServiceListFilterHook from '../hooks/useServiceListFilterHook'
 import Loader from '../components/Loader'
 import { Alert, Row, Col } from 'react-bootstrap'
 
-const HomeScreen = () => {
+const HomeScreen = ({ history, match }) => {
    const [mapCenter, setMapCenter] = useState({
       lat: 20.9670154,
       lng: -89.6242833,
@@ -39,6 +39,8 @@ const HomeScreen = () => {
                mapCenter={mapCenter}
                markers={markers}
                selectedService={selectedService}
+               history={history}
+               match={match}
             />
          </Col>
       </Row>

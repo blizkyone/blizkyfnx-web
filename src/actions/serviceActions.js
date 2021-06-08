@@ -33,11 +33,13 @@ export const getServiceProfile = (id) => async (dispatch, getState) => {
          userLogin: { userInfo },
       } = getState()
 
-      const config = {
-         headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-         },
-      }
+      const config = userInfo
+         ? {
+              headers: {
+                 Authorization: `Bearer ${userInfo.token}`,
+              },
+           }
+         : {}
 
       const { data } = await axios.get(
          `${process.env.REACT_APP_API_URL}/services/${id}`,
@@ -98,7 +100,6 @@ export const recommendService = (id) => async (dispatch, getState) => {
          payload: data,
       })
    } catch (error) {
-      console.log(error)
       const message =
          error.response && error.response.data.message
             ? error.response.data.message

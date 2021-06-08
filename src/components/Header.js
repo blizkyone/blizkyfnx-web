@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-// import { Route } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    Navbar,
@@ -8,9 +8,11 @@ import {
    NavDropdown,
    Form,
    Button,
+   Spinner,
 } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { logout, login } from '../actions/userActions'
+import { ifPendingNotifications } from '../actions/notificationActions'
 
 const Header = () => {
    const [email, setEmail] = useState('')
@@ -21,6 +23,14 @@ const Header = () => {
    const userLogin = useSelector((state) => state.userLogin)
    const { userInfo } = userLogin
    const { city, region } = useSelector((state) => state.searchLocation)
+   const { pending } = useSelector((state) => state.notificationsIfPending)
+   const { success } = useSelector((state) => state.notificationsMarkAsSeen)
+
+   useEffect(() => {
+      if (userInfo) {
+         dispatch(ifPendingNotifications())
+      }
+   }, [success])
 
    const logoutHandler = () => {
       dispatch(logout())
@@ -44,17 +54,42 @@ const Header = () => {
                className='justify-content-end'
             >
                {userInfo ? (
-                  <NavDropdown title={userInfo.name} id='username' className=''>
-                     <LinkContainer to='/mi-perfil'>
-                        <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
-                     </LinkContainer>
-                     <NavDropdown.Item onClick={logoutHandler}>
-                        Logout
-                     </NavDropdown.Item>
-                     <LinkContainer to='/crear-negocio'>
-                        <NavDropdown.Item>Crear Negocio</NavDropdown.Item>
-                     </LinkContainer>
-                  </NavDropdown>
+                  <>
+                     <>
+                        <Link
+                           to='/notifications'
+                           style={{ textDecoration: 'none' }}
+                        >
+                           Notificaciones
+                        </Link>
+                        {pending && (
+                           <i
+                              className='fas fa-circle'
+                              style={{
+                                 color: 'red',
+                                 position: 'relative',
+                                 top: -8,
+                              }}
+                           ></i>
+                        )}
+                     </>
+
+                     <NavDropdown
+                        title={userInfo.name}
+                        id='username'
+                        className=''
+                     >
+                        <LinkContainer to='/mi-perfil'>
+                           <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Item onClick={logoutHandler}>
+                           Logout
+                        </NavDropdown.Item>
+                        <LinkContainer to='/crear-negocio'>
+                           <NavDropdown.Item>Crear Negocio</NavDropdown.Item>
+                        </LinkContainer>
+                     </NavDropdown>
+                  </>
                ) : (
                   <Form
                      onSubmit={handleSubmit}

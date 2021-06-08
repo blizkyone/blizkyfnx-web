@@ -4,6 +4,10 @@ import {
    USER_MY_PROFILE_REQUEST,
    USER_MY_PROFILE_SUCCESS,
    USER_MY_PROFILE_RESET,
+   USER_PROFILE_FAIL,
+   USER_PROFILE_REQUEST,
+   USER_PROFILE_SUCCESS,
+   // USER_PROFILE_RESET,
    USER_LOGIN_FAIL,
    USER_LOGIN_REQUEST,
    USER_LOGIN_SUCCESS,
@@ -215,6 +219,48 @@ export const register = (postData) => async (dispatch) => {
             error.response && error.response.data.message
                ? error.response.data.message
                : error.message,
+      })
+   }
+}
+
+export const getUserProfile = (id) => async (dispatch, getState) => {
+   try {
+      dispatch({
+         type: USER_PROFILE_REQUEST,
+      })
+
+      const {
+         userLogin: { userInfo },
+      } = getState()
+
+      const config = userInfo
+         ? {
+              headers: {
+                 Authorization: `Bearer ${userInfo.token}`,
+              },
+           }
+         : {}
+
+      const { data } = await axios.get(
+         `${process.env.REACT_APP_API_URL}/users/${id}`,
+         config
+      )
+
+      dispatch({
+         type: USER_PROFILE_SUCCESS,
+         payload: data,
+      })
+   } catch (error) {
+      const message =
+         error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+      // if (message === 'Not authorized, token failed') {
+      //    dispatch(logout())
+      // }
+      dispatch({
+         type: USER_PROFILE_FAIL,
+         payload: message,
       })
    }
 }

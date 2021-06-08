@@ -4,10 +4,9 @@ import ServiceDisplay from '../components/myProfileScreen/ServiceDisplay'
 import useCrazyShit from '../hooks/useCrazyShit'
 import { useSelector, useDispatch } from 'react-redux'
 import Loader from '../components/Loader'
-import ButtonDisplayUserProfile from '../components/ButtonDisplayUserProfile'
 import { Alert, Row, Col, Card, ListGroup } from 'react-bootstrap'
-import { getUserProfile } from '../actions/userActions'
-import { USER_PROFILE_RESET } from '../constants/userConstants'
+import { getMyProfile } from '../actions/userActions'
+import { USER_MY_PROFILE_RESET } from '../constants/userConstants'
 
 const UserProfileScreen = ({ history, match }) => {
    const [mapCenter, setMapCenter] = useState({
@@ -18,14 +17,12 @@ const UserProfileScreen = ({ history, match }) => {
    const [selectedService, setSelectedService] = useState()
    const [value, setValue] = useState('')
 
-   const { id } = match.params
-
    const dispatch = useDispatch()
 
    const { userInfo } = useSelector((state) => state.userLogin)
 
    const { profile, recoCategories, loading, error } = useSelector(
-      (state) => state.userProfile
+      (state) => state.userMyProfile
    )
 
    const { service } = useSelector((state) => state.serviceRecommend)
@@ -39,17 +36,17 @@ const UserProfileScreen = ({ history, match }) => {
    )
 
    useEffect(() => {
-      if (userInfo && userInfo._id === id) {
-         history.push('/mi-perfil')
+      if (!userInfo) {
+         history.push('/')
       }
    }, [userInfo, history])
 
    useEffect(() => {
-      dispatch(getUserProfile(id))
+      dispatch(getMyProfile())
       return () => {
-         dispatch({ type: USER_PROFILE_RESET })
+         dispatch({ type: USER_MY_PROFILE_RESET })
       }
-   }, [dispatch, userInfo, service, id])
+   }, [dispatch, userInfo, service])
 
    //To add my services markers to the map
    const [markers, setMarkers] = useState([])
@@ -68,8 +65,6 @@ const UserProfileScreen = ({ history, match }) => {
       })
    }
 
-   console.log(profile)
-
    return loading ? (
       <Loader animation='border' />
    ) : error ? (
@@ -80,13 +75,8 @@ const UserProfileScreen = ({ history, match }) => {
             <Card className='p-3 mb-3'>
                <h1>{`${profile.name} ${profile.familyName}`}</h1>
                <p style={{ color: 'gray' }}>{profile.username}</p>
-               {userInfo && (
-                  // <Row>
-                  <ButtonDisplayUserProfile user={profile} />
-                  // </Row>
-               )}
                <Row>
-                  {profile.friends.length > 0 && (
+                  {profile.friends.length === 0 && (
                      <Col>
                         <p>{`Conexiones: ${profile.friends.length}`}</p>
                      </Col>

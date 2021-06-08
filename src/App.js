@@ -8,7 +8,9 @@ import SetLocationScreen from './screens/SetLocationScreen'
 import UserLoginScreen from './screens/UserLoginScreen'
 import UserRegisterScreen from './screens/UserRegisterScreen'
 import UserProfileScreen from './screens/UserProfileScreen'
+import MyProfileScreen from './screens/MyProfileScreen'
 import ServiceCreateScreen from './screens/ServiceCreateScreen'
+import NotificationsScreen from './screens/NotificationsScreen'
 
 function App() {
    return (
@@ -16,7 +18,12 @@ function App() {
          <Header />
          <main className='py-3'>
             <Container>
-               <Route path='/mi-perfil' component={UserProfileScreen} exact />
+               <Route
+                  path='/notifications'
+                  component={NotificationsScreen}
+                  exact
+               />
+               <Route path='/mi-perfil' component={MyProfileScreen} exact />
                <Route path='/login' component={UserLoginScreen} exact />
                <Route path='/register' component={UserRegisterScreen} exact />
                <Route
@@ -27,6 +34,11 @@ function App() {
                <Route
                   path='/set-location'
                   component={SetLocationScreen}
+                  exact
+               />
+               <Route
+                  path='/user/:id/profile'
+                  component={UserProfileScreen}
                   exact
                />
                <Route path='/' component={HomeScreen} exact />

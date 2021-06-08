@@ -12,6 +12,7 @@ import {
    userUpdateReducer,
    usernameValidationReducer,
    userConnectReducer,
+   userProfileReducer,
 } from './reducers/userReducers'
 import {
    serviceListReducer,
@@ -26,8 +27,16 @@ import {
    placeAutocompleteReducer,
    locationAddressReducer,
 } from './reducers/placesReducers'
+import {
+   notificationsIfPendingReducer,
+   notificationsMarkAsSeenReducer,
+   notificationsGetListReducer,
+} from './reducers/notificationsReducers'
 
 const reducer = combineReducers({
+   notificationsIfPending: notificationsIfPendingReducer,
+   notificationsMarkAsSeen: notificationsMarkAsSeenReducer,
+   notificationsGetList: notificationsGetListReducer,
    placeAutocomplete: placeAutocompleteReducer,
    placeAddress: locationAddressReducer,
    searchLocation: searchLocationReducer,
@@ -42,6 +51,7 @@ const reducer = combineReducers({
    userRegister: userRegisterReducer,
    usernameValidation: usernameValidationReducer,
    userMyProfile: userMyProfileReducer,
+   userProfile: userProfileReducer,
    userUpdateProfile: userUpdateProfileReducer,
    userList: userListReducer,
    userDelete: userDeleteReducer,
