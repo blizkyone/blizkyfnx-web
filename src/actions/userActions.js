@@ -194,7 +194,7 @@ export const register = (postData) => async (dispatch) => {
             'Content-Type': 'application/json',
          },
       }
-      console.log(postData)
+      // console.log(postData)
       const { data } = await axios.post(
          `${process.env.REACT_APP_API_URL}/users`,
          postData,
@@ -307,6 +307,7 @@ export const getMyProfile = () => async (dispatch, getState) => {
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
    try {
+      console.log('here')
       dispatch({
          type: USER_UPDATE_PROFILE_REQUEST,
       })

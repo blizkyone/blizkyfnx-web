@@ -20,7 +20,26 @@ import {
    SERVICE_RECOMMEND_SUCCESS,
    SERVICE_RECOMMEND_FAIL,
    SERVICE_RECOMMEND_RESET,
+   SERVICE_EDIT_PROFILE_REQUEST,
+   SERVICE_EDIT_PROFILE_SUCCESS,
+   SERVICE_EDIT_PROFILE_FAIL,
+   SERVICE_EDIT_PROFILE_RESET,
 } from '../constants/serviceConstants'
+
+export const serviceEditProfileReducer = (state = {}, action) => {
+   switch (action.type) {
+      case SERVICE_EDIT_PROFILE_REQUEST:
+         return { loading: true }
+      case SERVICE_EDIT_PROFILE_SUCCESS:
+         return { loading: false, service: action.payload }
+      case SERVICE_EDIT_PROFILE_FAIL:
+         return { loading: false, error: action.payload }
+      case SERVICE_EDIT_PROFILE_RESET:
+         return {}
+      default:
+         return state
+   }
+}
 
 export const serviceProfileReducer = (
    state = { service: { categories: [], team: [], phoneArray: [] } },

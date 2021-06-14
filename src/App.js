@@ -11,6 +11,10 @@ import UserProfileScreen from './screens/UserProfileScreen'
 import MyProfileScreen from './screens/MyProfileScreen'
 import ServiceCreateScreen from './screens/ServiceCreateScreen'
 import NotificationsScreen from './screens/NotificationsScreen'
+import UserEditProfileScreen from './screens/UserEditProfileScreen'
+import ServiceEditInfoScreen from './screens/ServiceEditInfoScreen'
+import ServiceEditCategoriesScreen from './screens/ServiceEditCategoriesScreen'
+import ServiceEditLocationScreen from './screens/ServiceEditLocationScreen'
 
 function App() {
    return (
@@ -24,6 +28,11 @@ function App() {
                   exact
                />
                <Route path='/mi-perfil' component={MyProfileScreen} exact />
+               <Route
+                  path='/editar-perfil'
+                  component={UserEditProfileScreen}
+                  exact
+               />
                <Route path='/login' component={UserLoginScreen} exact />
                <Route path='/register' component={UserRegisterScreen} exact />
                <Route
@@ -39,6 +48,21 @@ function App() {
                <Route
                   path='/user/:id/profile'
                   component={UserProfileScreen}
+                  exact
+               />
+               <Route
+                  path='/service/edit-info'
+                  component={ServiceEditInfoScreen}
+                  exact
+               />
+               <Route
+                  path='/service/edit-categories'
+                  component={ServiceEditCategoriesScreen}
+                  exact
+               />
+               <Route
+                  path='/service/edit-location'
+                  component={ServiceEditLocationScreen}
                   exact
                />
                <Route path='/' component={HomeScreen} exact />

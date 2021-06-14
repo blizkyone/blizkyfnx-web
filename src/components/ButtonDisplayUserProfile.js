@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { connectWith } from '../actions/userActions'
-import { Button, Spinner, Modal } from 'react-bootstrap'
+import { Button, Spinner, Modal, Row, Col } from 'react-bootstrap'
 
 const ButtonDisplayUserProfile = ({ user }) => {
    const [show, setShow] = useState()
@@ -17,6 +17,21 @@ const ButtonDisplayUserProfile = ({ user }) => {
    const handleReject = () => {
       dispatch(connectWith(user._id, true))
    }
+
+   const noUserModal = () => (
+      <Modal show={show} onHide={(_) => setShow(false)}>
+         <Modal.Header>
+            <Modal.Title>
+               Crea un usuario para Recomendar y Conectar en Blizky
+            </Modal.Title>
+         </Modal.Header>
+         <Modal.Footer>
+            <Button variant='primary' onClick={(_) => setShow(false)}>
+               Ok!
+            </Button>
+         </Modal.Footer>
+      </Modal>
+   )
 
    const cancelModal = () => (
       <Modal show={show} onHide={(_) => setShow(false)}>
@@ -52,9 +67,12 @@ const ButtonDisplayUserProfile = ({ user }) => {
 
    if (!userInfo)
       return (
-         <Button size='sm' variant='primary' onClick={handleClickButton}>
-            Connectar
-         </Button>
+         <>
+            <Button size='sm' variant='primary' onClick={(_) => setShow(true)}>
+               Connectar
+            </Button>
+            {noUserModal()}
+         </>
       )
    switch (user.status) {
       case 'none':
@@ -67,30 +85,40 @@ const ButtonDisplayUserProfile = ({ user }) => {
                )}
             </Button>
          )
-      case 'request-recieved':
-         return (
-            <div className='d-flex justify-content-start'>
-               <Button size='sm' variant='light' onClick={handleClickButton}>
-                  {connectLoading ? (
-                     <Spinner animation='border' size='sm' />
-                  ) : (
+      case 'request-received':
+         return connectLoading ? (
+            <Spinner animation='border' size='sm' />
+         ) : (
+            <Row>
+               <p>¿Aceptar solicitud?</p>
+               <Col>
+                  <Button
+                     style={{ width: '100%' }}
+                     size='sm'
+                     variant='light'
+                     onClick={handleClickButton}
+                  >
                      <i
                         className='fas fa-check-circle'
                         style={{ color: 'green' }}
                      ></i>
-                  )}
-               </Button>
-               <Button size='sm' variant='light' onClick={handleReject}>
-                  {connectLoading ? (
-                     <Spinner animation='border' size='sm' />
-                  ) : (
+                  </Button>
+               </Col>
+
+               <Col>
+                  <Button
+                     style={{ width: '100%' }}
+                     size='sm'
+                     variant='light'
+                     onClick={handleReject}
+                  >
                      <i
                         className='fas fa-times-circle'
                         style={{ color: 'red' }}
                      ></i>
-                  )}
-               </Button>
-            </div>
+                  </Button>
+               </Col>
+            </Row>
          )
       case 'request-sent':
          return (

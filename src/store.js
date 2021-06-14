@@ -21,6 +21,7 @@ import {
    serviceCreateReducer,
    serviceRecommendReducer,
    serviceProfileReducer,
+   serviceEditProfileReducer,
 } from './reducers/serviceReducer'
 import { searchLocationReducer } from './reducers/searchReducer'
 import {
@@ -43,6 +44,7 @@ const reducer = combineReducers({
    serviceProfile: serviceProfileReducer,
    serviceRecommend: serviceRecommendReducer,
    serviceCreate: serviceCreateReducer,
+   serviceEditProfile: serviceEditProfileReducer,
    serviceNewCategory: serviceNewCategoryReducer,
    serviceList: serviceListReducer,
    serviceCategories: serviceCategoriesReducer,

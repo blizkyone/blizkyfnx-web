@@ -84,11 +84,11 @@ const UserRegisterSreen = ({ history }) => {
 
    return (
       <FormContainer>
-         <h1>Sign Up</h1>
+         <h1>Registro</h1>
          {message && <Message variant='danger'>{message}</Message>}
          <Form onSubmit={submitHandler}>
             <Form.Group controlId='name'>
-               <Form.Label>Name</Form.Label>
+               <Form.Label>Nombre</Form.Label>
                <Form.Control
                   type='name'
                   placeholder='Enter name'

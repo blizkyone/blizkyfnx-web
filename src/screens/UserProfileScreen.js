@@ -30,7 +30,7 @@ const UserProfileScreen = ({ history, match }) => {
 
    const { service } = useSelector((state) => state.serviceRecommend)
 
-   // console.log(profile.services)
+   const { success } = useSelector((state) => state.userConnect)
 
    const { filteredServices, markers: listMarkers } = useCrazyShit(
       value,
@@ -49,7 +49,7 @@ const UserProfileScreen = ({ history, match }) => {
       return () => {
          dispatch({ type: USER_PROFILE_RESET })
       }
-   }, [dispatch, userInfo, service, id])
+   }, [dispatch, userInfo, service, id, success])
 
    //To add my services markers to the map
    const [markers, setMarkers] = useState([])
@@ -80,15 +80,13 @@ const UserProfileScreen = ({ history, match }) => {
             <Card className='p-3 mb-3'>
                <h1>{`${profile.name} ${profile.familyName}`}</h1>
                <p style={{ color: 'gray' }}>{profile.username}</p>
-               {userInfo && (
-                  // <Row>
-                  <ButtonDisplayUserProfile user={profile} />
-                  // </Row>
-               )}
+
+               <ButtonDisplayUserProfile user={profile} />
+
                <Row>
                   {profile.friends.length > 0 && (
                      <Col>
-                        <p>{`Conexiones: ${profile.friends.length}`}</p>
+                        <p>{`Amigos: ${profile.friends.length}`}</p>
                      </Col>
                   )}
                   <Col></Col>

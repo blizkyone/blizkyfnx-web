@@ -15,13 +15,62 @@ import {
    SERVICE_RECOMMEND_REQUEST,
    SERVICE_RECOMMEND_SUCCESS,
    SERVICE_RECOMMEND_FAIL,
-   SERVICE_RECOMMEND_RESET,
    SERVICE_PROFILE_REQUEST,
    SERVICE_PROFILE_SUCCESS,
    SERVICE_PROFILE_FAIL,
+   SERVICE_EDIT_PROFILE_REQUEST,
+   SERVICE_EDIT_PROFILE_SUCCESS,
+   SERVICE_EDIT_PROFILE_FAIL,
 } from '../constants/serviceConstants'
 import axios from 'axios'
 import { logout } from '../actions/userActions'
+
+export const editServiceProfile =
+   (updates, id) => async (dispatch, getState) => {
+      try {
+         dispatch({
+            type: SERVICE_EDIT_PROFILE_REQUEST,
+         })
+
+         const {
+            userLogin: { userInfo },
+         } = getState()
+
+         const config = {
+            headers: {
+               Authorization: `Bearer ${userInfo.token}`,
+            },
+         }
+
+         const { data } = await axios.put(
+            `${process.env.REACT_APP_API_URL}/services/${id}`,
+            updates,
+            config
+         )
+
+         dispatch({
+            type: SERVICE_EDIT_PROFILE_SUCCESS,
+            payload: data,
+         })
+      } catch (error) {
+         console.log(error)
+         const message =
+            error.response && error.response.data.message
+               ? error.response.data.message
+               : error.message
+         if (
+            message === 'Not authorized, token failed' ||
+            message === 'User not found'
+         ) {
+            console.log('logout')
+            dispatch(logout())
+         }
+         dispatch({
+            type: SERVICE_EDIT_PROFILE_FAIL,
+            payload: message,
+         })
+      }
+   }
 
 export const getServiceProfile = (id) => async (dispatch, getState) => {
    try {

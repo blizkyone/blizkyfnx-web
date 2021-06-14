@@ -4,7 +4,7 @@ import ServiceDisplay from '../components/myProfileScreen/ServiceDisplay'
 import useCrazyShit from '../hooks/useCrazyShit'
 import { useSelector, useDispatch } from 'react-redux'
 import Loader from '../components/Loader'
-import { Alert, Row, Col, Card, ListGroup } from 'react-bootstrap'
+import { Alert, Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
 import { getMyProfile } from '../actions/userActions'
 import { USER_MY_PROFILE_RESET } from '../constants/userConstants'
 
@@ -75,13 +75,18 @@ const UserProfileScreen = ({ history, match }) => {
             <Card className='p-3 mb-3'>
                <h1>{`${profile.name} ${profile.familyName}`}</h1>
                <p style={{ color: 'gray' }}>{profile.username}</p>
+               <Button
+                  variant='info'
+                  onClick={(_) => history.push('editar-perfil')}
+               >
+                  Editar perfil
+               </Button>
                <Row>
                   {profile.friends.length === 0 && (
                      <Col>
-                        <p>{`Conexiones: ${profile.friends.length}`}</p>
+                        <p>{`Amigos: ${profile.friends.length}`}</p>
                      </Col>
                   )}
-                  <Col></Col>
                </Row>
             </Card>
             {profile.services.length > 0 && (

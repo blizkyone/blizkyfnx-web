@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Row, Button, Spinner } from 'react-bootstrap'
+import { Col, Row, Button, Spinner, Modal, Card } from 'react-bootstrap'
 import { recommendService, getServiceProfile } from '../actions/serviceActions'
 import Message from './Message'
 import ButtonDisplay from './ButtonDisplay'
+import Radium from 'radium'
+
+const styles = {
+   user: {
+      color: 'blue',
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+}
 
 const ServiceInfo = ({ selectedService, history }) => {
    const [message, setMessage] = useState('')
+   const [show, setShow] = useState(false)
+   const [isAdmin, setIsAdmin] = useState(false)
 
    const dispatch = useDispatch()
 
@@ -20,9 +32,7 @@ const ServiceInfo = ({ selectedService, history }) => {
       (state) => state.serviceProfile
    )
 
-   const { error: connectError, success } = useSelector(
-      (state) => state.userConnect
-   )
+   const { success } = useSelector((state) => state.userConnect)
 
    useEffect(() => {
       setMessage('')
@@ -30,19 +40,92 @@ const ServiceInfo = ({ selectedService, history }) => {
    }, [selectedService, success])
 
    useEffect(() => {
-      if (error) setMessage(error)
-      if (recoError) setMessage(recoError)
-      if (connectError) setMessage(connectError)
-   }, [error, recoError, connectError])
+      if (service && service.owner === userInfo._id) {
+         setIsAdmin(true)
+      } else {
+         setIsAdmin(false)
+      }
+   }, [service])
+
+   useEffect(() => {
+      if (error) setMessage(`error: ${error}`)
+      if (recoError) setMessage(`recoError ${recoError}`)
+      // if (connectError) setMessage(`connectError ${connectError}`)
+   }, [error, recoError])
 
    const handleRecommend = () => {
-      dispatch(recommendService(service._id))
+      if (userInfo) {
+         dispatch(recommendService(service._id))
+      } else {
+         setShow(true)
+      }
    }
+
+   const noUserModal = () => (
+      <Modal show={show} onHide={(_) => setShow(false)}>
+         <Modal.Header>
+            <Modal.Title>
+               Crea un usuario para Recomendar y Conectar en Blizky
+            </Modal.Title>
+         </Modal.Header>
+         <Modal.Footer>
+            <Button variant='primary' onClick={(_) => setShow(false)}>
+               Ok!
+            </Button>
+         </Modal.Footer>
+      </Modal>
+   )
 
    return loading ? (
       <Spinner animation='border' size='sm' />
    ) : (
       <Col>
+         {noUserModal()}
+         {isAdmin && (
+            <Card className='mb-3 p-3'>
+               <Row>
+                  <Col>
+                     <Button
+                        variant='info'
+                        size='sm'
+                        onClick={(_) =>
+                           history.push(`/service/edit-info`, {
+                              serviceInfo: selectedService,
+                           })
+                        }
+                     >
+                        Edit Info
+                     </Button>
+                  </Col>
+                  <Col>
+                     <Button
+                        variant='info'
+                        size='sm'
+                        onClick={(_) =>
+                           history.push(`/service/edit-location`, {
+                              serviceInfo: selectedService,
+                           })
+                        }
+                     >
+                        Edit Location
+                     </Button>
+                  </Col>
+                  <Col>
+                     <Button
+                        variant='info'
+                        size='sm'
+                        onClick={(_) =>
+                           history.push(`/service/edit-categories`, {
+                              serviceInfo: selectedService,
+                           })
+                        }
+                     >
+                        Edit Categories
+                     </Button>
+                  </Col>
+               </Row>
+            </Card>
+         )}
          <Row>
             {message && <Message variant='danger'>{message}</Message>}
             <Col>
@@ -85,7 +168,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                      <p className='m-1'>{`${user.position}:`}</p>
                      <p
                         className='m-1'
-                        style={{ color: 'blue' }}
+                        style={styles.user}
                         onClick={(_) =>
                            history.push(`/user/${user.user._id}/profile`)
                         }
@@ -93,9 +176,11 @@ const ServiceInfo = ({ selectedService, history }) => {
                         {`${user.user.name} ${user.user.familyName}`}
                      </p>
                   </div>
-                  {userInfo && userInfo._id !== user.user._id && (
-                     <ButtonDisplay user={user} userInfo={userInfo} />
-                  )}
+                  {!userInfo ? (
+                     <ButtonDisplay user={user} />
+                  ) : userInfo._id !== user.user._id ? (
+                     <ButtonDisplay user={user} />
+                  ) : null}
                </Col>
             ))}
          </Row>
@@ -142,4 +227,4 @@ const ServiceInfo = ({ selectedService, history }) => {
    )
 }
 
-export default ServiceInfo
+export default Radium(ServiceInfo)

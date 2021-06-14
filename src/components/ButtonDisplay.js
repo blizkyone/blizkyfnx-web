@@ -11,12 +11,29 @@ const ButtonDisplay = ({ user }) => {
    const { userInfo } = useSelector((state) => state.userLogin)
 
    const handleClickButton = () => {
-      dispatch(connectWith(user.user._id))
+      if (userInfo) {
+         dispatch(connectWith(user.user._id))
+      }
    }
 
    const handleReject = () => {
       dispatch(connectWith(user.user._id, true))
    }
+
+   const noUserModal = () => (
+      <Modal show={show} onHide={(_) => setShow(false)}>
+         <Modal.Header>
+            <Modal.Title>
+               Crea un usuario para Recomendar y Conectar en Blizky
+            </Modal.Title>
+         </Modal.Header>
+         <Modal.Footer>
+            <Button variant='primary' onClick={(_) => setShow(false)}>
+               Ok!
+            </Button>
+         </Modal.Footer>
+      </Modal>
+   )
 
    const cancelModal = () => (
       <Modal show={show} onHide={(_) => setShow(false)}>
@@ -52,9 +69,12 @@ const ButtonDisplay = ({ user }) => {
 
    if (!userInfo)
       return (
-         <Button size='sm' variant='primary' onClick={handleClickButton}>
-            Connectar
-         </Button>
+         <>
+            <Button size='sm' variant='primary' onClick={(_) => setShow(true)}>
+               Connectar
+            </Button>
+            {noUserModal()}
+         </>
       )
    switch (user.status) {
       case 'none':
@@ -67,7 +87,7 @@ const ButtonDisplay = ({ user }) => {
                )}
             </Button>
          )
-      case 'request-recieved':
+      case 'request-received':
          return (
             <div className='d-flex justify-content-start'>
                <Button size='sm' variant='light' onClick={handleClickButton}>
