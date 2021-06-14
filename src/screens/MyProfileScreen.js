@@ -4,9 +4,20 @@ import ServiceDisplay from '../components/myProfileScreen/ServiceDisplay'
 import useCrazyShit from '../hooks/useCrazyShit'
 import { useSelector, useDispatch } from 'react-redux'
 import Loader from '../components/Loader'
-import { Alert, Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
-import { getMyProfile } from '../actions/userActions'
-import { USER_MY_PROFILE_RESET } from '../constants/userConstants'
+import {
+   Alert,
+   Row,
+   Col,
+   Card,
+   ListGroup,
+   Button,
+   Spinner,
+} from 'react-bootstrap'
+import { getMyProfile, handleInviteToTeam } from '../actions/userActions'
+import {
+   USER_MY_PROFILE_RESET,
+   USER_RESPOND_INVITE_TO_TEAM_RESET,
+} from '../constants/userConstants'
 
 const UserProfileScreen = ({ history, match }) => {
    const [mapCenter, setMapCenter] = useState({
@@ -25,9 +36,15 @@ const UserProfileScreen = ({ history, match }) => {
       (state) => state.userMyProfile
    )
 
+   const {
+      loading: respondLoading,
+      error: respondError,
+      success: respondSuccess,
+   } = useSelector((state) => state.userRespondInviteToTeam)
+
    const { service } = useSelector((state) => state.serviceRecommend)
 
-   // console.log(profile.services)
+   // console.log(profile)
 
    const { filteredServices, markers: listMarkers } = useCrazyShit(
       value,
@@ -46,7 +63,7 @@ const UserProfileScreen = ({ history, match }) => {
       return () => {
          dispatch({ type: USER_MY_PROFILE_RESET })
       }
-   }, [dispatch, userInfo, service])
+   }, [dispatch, userInfo, service, respondSuccess])
 
    //To add my services markers to the map
    const [markers, setMarkers] = useState([])
@@ -65,16 +82,22 @@ const UserProfileScreen = ({ history, match }) => {
       })
    }
 
+   const handleTeamRequest = (accept, service, position) => {
+      dispatch(handleInviteToTeam({ accept, service, position }))
+   }
+
    return loading ? (
       <Loader animation='border' />
    ) : error ? (
       <Alert variant='danger'>{error}</Alert>
    ) : (
       <Row>
+         {respondError && <Alert variant='danger'>{respondError}</Alert>}
          <Col xs={5}>
             <Card className='p-3 mb-3'>
-               <h1>{`${profile.name} ${profile.familyName}`}</h1>
+               <h1 className='mb-0'>{`${profile.name} ${profile.familyName}`}</h1>
                <p style={{ color: 'gray' }}>{profile.username}</p>
+               {profile.bio && <p>{profile.bio}</p>}
                <Button
                   variant='info'
                   onClick={(_) => history.push('editar-perfil')}
@@ -89,6 +112,59 @@ const UserProfileScreen = ({ history, match }) => {
                   )}
                </Row>
             </Card>
+            {profile.teamRequest.length > 0 && (
+               <Card className='p-3 my-3'>
+                  <h3 className='mb-2'>Invitaciones</h3>
+                  <ListGroup variant='flush'>
+                     {profile.teamRequest.map((request) => (
+                        <ListGroup.Item>
+                           <p>
+                              <strong>{request.position}</strong>
+                              {` in ${request.service.name}`}
+                           </p>
+                           {respondLoading ? (
+                              <Spinner animation='border' size='sm' />
+                           ) : (
+                              <div className='d-flex justify-content-start'>
+                                 <Button
+                                    size='sm'
+                                    variant='light'
+                                    onClick={(_) =>
+                                       handleTeamRequest(
+                                          true,
+                                          request.service._id,
+                                          request.position
+                                       )
+                                    }
+                                 >
+                                    <i
+                                       className='fas fa-check-circle'
+                                       style={{ color: 'green' }}
+                                    ></i>
+                                 </Button>
+                                 <Button
+                                    size='sm'
+                                    variant='light'
+                                    onClick={(_) =>
+                                       handleTeamRequest(
+                                          false,
+                                          request.service._id,
+                                          request.position
+                                       )
+                                    }
+                                 >
+                                    <i
+                                       className='fas fa-times-circle'
+                                       style={{ color: 'red' }}
+                                    ></i>
+                                 </Button>
+                              </div>
+                           )}
+                        </ListGroup.Item>
+                     ))}
+                  </ListGroup>
+               </Card>
+            )}
             {profile.services.length > 0 && (
                <Card className='p-3 my-3'>
                   <h3 className='mb-2'>Servicios</h3>
@@ -102,6 +178,7 @@ const UserProfileScreen = ({ history, match }) => {
                            <p className='m-0' style={{ fontWeight: 600 }}>
                               {service.service.name}
                            </p>
+                           <p className='m-0'>{service.position}</p>
                            {service.service.categories.map((category) => (
                               <p
                                  style={{

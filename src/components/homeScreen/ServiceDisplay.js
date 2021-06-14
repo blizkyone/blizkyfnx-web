@@ -12,6 +12,9 @@ const ServiceDisplay = ({
 }) => {
    return (
       <>
+         <Row style={{ height: '400px' }}>
+            <DirectoryMap mapCenter={mapCenter} markers={markers} />
+         </Row>
          {selectedService && (
             <Row>
                <Card className='p-3'>
@@ -22,9 +25,6 @@ const ServiceDisplay = ({
                </Card>
             </Row>
          )}
-         <Row style={{ height: '400px' }}>
-            <DirectoryMap mapCenter={mapCenter} markers={markers} />
-         </Row>
       </>
    )
 }

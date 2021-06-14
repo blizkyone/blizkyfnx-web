@@ -37,7 +37,91 @@ import {
    USER_CONNECT_FAIL,
    USER_CONNECT_SUCCESS,
    USER_CONNECT_REQUEST,
+   USER_INVITE_TO_TEAM_FAIL,
+   USER_INVITE_TO_TEAM_REQUEST,
+   USER_INVITE_TO_TEAM_SUCCESS,
+   USER_RESPOND_INVITE_TO_TEAM_FAIL,
+   USER_RESPOND_INVITE_TO_TEAM_REQUEST,
+   USER_RESPOND_INVITE_TO_TEAM_SUCCESS,
 } from '../constants/userConstants'
+
+export const handleInviteToTeam =
+   ({ accept, service, position }) =>
+   async (dispatch, getState) => {
+      try {
+         dispatch({
+            type: USER_RESPOND_INVITE_TO_TEAM_REQUEST,
+         })
+
+         const {
+            userLogin: { userInfo },
+         } = getState()
+
+         const config = {
+            headers: {
+               Authorization: `Bearer ${userInfo.token}`,
+               'Content-Type': 'application/json',
+            },
+         }
+
+         await axios.post(
+            `${process.env.REACT_APP_API_URL}/users/${service}/handle-invite-to-team`,
+            { accept, position },
+            config
+         )
+
+         dispatch({
+            type: USER_RESPOND_INVITE_TO_TEAM_SUCCESS,
+         })
+      } catch (error) {
+         dispatch({
+            type: USER_RESPOND_INVITE_TO_TEAM_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
+      }
+   }
+
+export const inviteUserToTeam =
+   ({ user, service, position }) =>
+   async (dispatch, getState) => {
+      try {
+         dispatch({
+            type: USER_INVITE_TO_TEAM_REQUEST,
+         })
+
+         const {
+            userLogin: { userInfo },
+         } = getState()
+
+         const config = {
+            headers: {
+               Authorization: `Bearer ${userInfo.token}`,
+               'Content-Type': 'application/json',
+            },
+         }
+
+         const { data } = await axios.post(
+            `${process.env.REACT_APP_API_URL}/users/${user}/invite-to-team`,
+            { service, position },
+            config
+         )
+
+         dispatch({
+            type: USER_INVITE_TO_TEAM_SUCCESS,
+         })
+      } catch (error) {
+         dispatch({
+            type: USER_INVITE_TO_TEAM_FAIL,
+            payload:
+               error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+         })
+      }
+   }
 
 export const connectWith =
    (id, reject = undefined) =>

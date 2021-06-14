@@ -38,7 +38,45 @@ import {
    USER_CONNECT_FAIL,
    USER_CONNECT_REQUEST,
    USER_CONNECT_SUCCESS,
+   USER_INVITE_TO_TEAM_FAIL,
+   USER_INVITE_TO_TEAM_REQUEST,
+   USER_INVITE_TO_TEAM_SUCCESS,
+   USER_INVITE_TO_TEAM_RESET,
+   USER_RESPOND_INVITE_TO_TEAM_FAIL,
+   USER_RESPOND_INVITE_TO_TEAM_REQUEST,
+   USER_RESPOND_INVITE_TO_TEAM_SUCCESS,
+   USER_RESPOND_INVITE_TO_TEAM_RESET,
 } from '../constants/userConstants'
+
+export const userRespondInviteToTeamReducer = (state = {}, action) => {
+   switch (action.type) {
+      case USER_RESPOND_INVITE_TO_TEAM_REQUEST:
+         return { loading: true }
+      case USER_RESPOND_INVITE_TO_TEAM_SUCCESS:
+         return { loading: false, success: true }
+      case USER_RESPOND_INVITE_TO_TEAM_FAIL:
+         return { loading: false, error: action.payload }
+      case USER_RESPOND_INVITE_TO_TEAM_RESET:
+         return {}
+      default:
+         return state
+   }
+}
+
+export const userInviteToTeamReducer = (state = {}, action) => {
+   switch (action.type) {
+      case USER_INVITE_TO_TEAM_REQUEST:
+         return { loading: true }
+      case USER_INVITE_TO_TEAM_SUCCESS:
+         return { loading: false, success: true }
+      case USER_INVITE_TO_TEAM_FAIL:
+         return { loading: false, error: action.payload }
+      case USER_INVITE_TO_TEAM_RESET:
+         return {}
+      default:
+         return state
+   }
+}
 
 export const userConnectReducer = (state = {}, action) => {
    switch (action.type) {
@@ -158,6 +196,7 @@ export const userMyProfileReducer = (
          friends: [],
          recoServices: [],
          antirecoServices: [],
+         teamRequest: [],
       },
       recoCategories: [],
       antirecoCategories: [],
@@ -183,6 +222,7 @@ export const userMyProfileReducer = (
                friends: [],
                recoServices: [],
                antirecoServices: [],
+               teamRequest: [],
             },
             recoCategories: [],
             antirecoCategories: [],

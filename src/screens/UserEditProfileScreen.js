@@ -107,8 +107,19 @@ const UserEditProfileSreen = ({ history }) => {
                   onChange={(e) => setBio(e.target.value)}
                ></Form.Control>
             </Form.Group>
-            <Button type='submit' variant='primary'>
-               {loading ? <Spinner animation='border' size='sm' /> : 'Register'}
+            <Button className='m-2' type='submit' variant='primary'>
+               {loading ? (
+                  <Spinner animation='border' size='sm' />
+               ) : (
+                  'Guardar Cambios'
+               )}
+            </Button>
+            <Button
+               className='m-2'
+               variant='danger'
+               onClick={(_) => history.goBack()}
+            >
+               Cancelar
             </Button>
          </Form>
       </FormContainer>

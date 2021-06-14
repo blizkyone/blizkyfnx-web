@@ -28,13 +28,13 @@ const ServicesListFilter = ({
             >
                Recomendados
             </ListGroup.Item>
-            <ListGroup.Item
+            {/* <ListGroup.Item
                action
                active={recomendados}
                onClick={(_) => setRecomendados(true)}
             >
                Antirecomendados
-            </ListGroup.Item>
+            </ListGroup.Item> */}
          </ListGroup>
          <Form>
             <Form.Control

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Form, ListGroup } from 'react-bootstrap'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Form, ListGroup, Row, Col } from 'react-bootstrap'
 
 const ServicesListFilter = ({
    filteredServices,
@@ -7,8 +8,10 @@ const ServicesListFilter = ({
    value,
    setValue,
    setMapCenter,
+   recomendados,
+   setRecomendados,
 }) => {
-   const [recomendados, setRecomendados] = useState(false)
+   const { userInfo } = useSelector((state) => state.userLogin)
 
    const handleSelectService = (service) => {
       setSelectedService(service)
@@ -63,7 +66,27 @@ const ServicesListFilter = ({
                            key={service._id}
                            onClick={(_) => handleSelectService(service)}
                         >
-                           {service.name}
+                           <p className='mb-0'>{service.name}</p>
+                           <Row>
+                              <Col>
+                                 {service.recos.length > 0 && (
+                                    <p
+                                       className='m-0 p-0'
+                                       style={{ color: 'gray' }}
+                                    >{`recos: ${service.recos.length}`}</p>
+                                 )}
+                              </Col>
+                              {userInfo && service.recosFollowing && (
+                                 <Col>
+                                    {service.recosFollowing.length > 0 && (
+                                       <p
+                                          className='m-0 p-0'
+                                          style={{ color: 'gray' }}
+                                       >{`amigos: ${service.recosFollowing.length}`}</p>
+                                    )}
+                                 </Col>
+                              )}
+                           </Row>
                         </ListGroup.Item>
                      ))}
                   </ListGroup>

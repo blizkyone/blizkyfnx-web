@@ -13,6 +13,8 @@ import {
    usernameValidationReducer,
    userConnectReducer,
    userProfileReducer,
+   userInviteToTeamReducer,
+   userRespondInviteToTeamReducer,
 } from './reducers/userReducers'
 import {
    serviceListReducer,
@@ -59,6 +61,8 @@ const reducer = combineReducers({
    userDelete: userDeleteReducer,
    userUpdate: userUpdateReducer,
    userConnect: userConnectReducer,
+   userInviteToTeam: userInviteToTeamReducer,
+   userRespondInviteToTeam: userRespondInviteToTeamReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

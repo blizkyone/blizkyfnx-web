@@ -15,9 +15,10 @@ const HomeScreen = ({ history, match }) => {
    //21.0020474837025, -89.61022170400815
    const [selectedService, setSelectedService] = useState()
    const [value, setValue] = useState('')
+   const [recomendados, setRecomendados] = useState(false)
 
    const { filteredServices, markers, loading, error } =
-      useServiceListFilterHook(value)
+      useServiceListFilterHook(value, recomendados)
 
    return loading ? (
       <Loader animation='border' />
@@ -32,6 +33,8 @@ const HomeScreen = ({ history, match }) => {
                setValue={setValue}
                value={value}
                filteredServices={filteredServices}
+               recomendados={recomendados}
+               setRecomendados={setRecomendados}
             />
          </Col>
          <Col>

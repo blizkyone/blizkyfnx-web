@@ -5,6 +5,7 @@ import { recommendService, getServiceProfile } from '../actions/serviceActions'
 import Message from './Message'
 import ButtonDisplay from './ButtonDisplay'
 import Radium from 'radium'
+import InviteToTeamModal from './InviteToTeamModal'
 
 const styles = {
    user: {
@@ -18,6 +19,7 @@ const styles = {
 const ServiceInfo = ({ selectedService, history }) => {
    const [message, setMessage] = useState('')
    const [show, setShow] = useState(false)
+   const [inviteShow, setInviteShow] = useState(false)
    const [isAdmin, setIsAdmin] = useState(false)
 
    const dispatch = useDispatch()
@@ -40,7 +42,7 @@ const ServiceInfo = ({ selectedService, history }) => {
    }, [selectedService, success])
 
    useEffect(() => {
-      if (service && service.owner === userInfo._id) {
+      if (userInfo && service && service.owner === userInfo._id) {
          setIsAdmin(true)
       } else {
          setIsAdmin(false)
@@ -81,6 +83,11 @@ const ServiceInfo = ({ selectedService, history }) => {
    ) : (
       <Col>
          {noUserModal()}
+         <InviteToTeamModal
+            selectedService={selectedService}
+            show={inviteShow}
+            setShow={setInviteShow}
+         />
          {isAdmin && (
             <Card className='mb-3 p-3'>
                <Row>
@@ -121,6 +128,15 @@ const ServiceInfo = ({ selectedService, history }) => {
                         }
                      >
                         Edit Categories
+                     </Button>
+                  </Col>
+                  <Col>
+                     <Button
+                        variant='info'
+                        size='sm'
+                        onClick={(_) => setInviteShow(true)}
+                     >
+                        Add Team Member
                      </Button>
                   </Col>
                </Row>
@@ -167,6 +183,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                   <div>
                      <p className='m-1'>{`${user.position}:`}</p>
                      <p
+                        key={user.user._id}
                         className='m-1'
                         style={styles.user}
                         onClick={(_) =>
