@@ -90,7 +90,12 @@ const ButtonDisplay = ({ user }) => {
       case 'request-received':
          return (
             <div className='d-flex justify-content-start'>
-               <Button size='sm' variant='light' onClick={handleClickButton}>
+               <Button
+                  // size='sm'
+                  // className='p-0'
+                  variant='outline-primary'
+                  onClick={handleClickButton}
+               >
                   {connectLoading ? (
                      <Spinner animation='border' size='sm' />
                   ) : (
@@ -100,7 +105,12 @@ const ButtonDisplay = ({ user }) => {
                      ></i>
                   )}
                </Button>
-               <Button size='sm' variant='light' onClick={handleReject}>
+               <Button
+                  // size='sm'
+                  // className='p-0'
+                  variant='outline-primary'
+                  onClick={handleReject}
+               >
                   {connectLoading ? (
                      <Spinner animation='border' size='sm' />
                   ) : (
@@ -134,7 +144,7 @@ const ButtonDisplay = ({ user }) => {
             <>
                <Button
                   size='sm'
-                  variant='secondary'
+                  variant='outline-secondary'
                   onClick={(_) => setShow(true)}
                >
                   {connectLoading ? (

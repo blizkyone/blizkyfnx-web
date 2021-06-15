@@ -42,7 +42,15 @@ export const serviceEditProfileReducer = (state = {}, action) => {
 }
 
 export const serviceProfileReducer = (
-   state = { service: { categories: [], team: [], phoneArray: [] } },
+   state = {
+      service: {
+         categories: [],
+         team: [],
+         phoneArray: [],
+         recos: [],
+         recosFollowing: [],
+      },
+   },
    action
 ) => {
    switch (action.type) {

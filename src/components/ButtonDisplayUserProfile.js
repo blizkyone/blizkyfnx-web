@@ -94,8 +94,9 @@ const ButtonDisplayUserProfile = ({ user }) => {
                <Col>
                   <Button
                      style={{ width: '100%' }}
-                     size='sm'
-                     variant='light'
+                     // size='sm'
+                     className='p-0'
+                     variant='outline-primary'
                      onClick={handleClickButton}
                   >
                      <i
@@ -108,8 +109,9 @@ const ButtonDisplayUserProfile = ({ user }) => {
                <Col>
                   <Button
                      style={{ width: '100%' }}
-                     size='sm'
-                     variant='light'
+                     // size='sm'
+                     className='p-0'
+                     variant='outline-primary'
                      onClick={handleReject}
                   >
                      <i
@@ -142,7 +144,8 @@ const ButtonDisplayUserProfile = ({ user }) => {
             <>
                <Button
                   size='sm'
-                  variant='secondary'
+                  className='p-0 mb-1'
+                  variant='outline-secondary'
                   onClick={(_) => setShow(true)}
                >
                   {connectLoading ? (

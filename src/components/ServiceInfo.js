@@ -6,10 +6,24 @@ import Message from './Message'
 import ButtonDisplay from './ButtonDisplay'
 import Radium from 'radium'
 import InviteToTeamModal from './InviteToTeamModal'
+import RecosListModal from './RecosListModal'
 
 const styles = {
    user: {
       color: 'blue',
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+   link: {
+      display: 'inline-block',
+      fontWeight: 600,
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+   ref: {
+      fontWeight: 600,
       ':hover': {
          cursor: 'pointer',
       },
@@ -19,6 +33,8 @@ const styles = {
 const ServiceInfo = ({ selectedService, history }) => {
    const [message, setMessage] = useState('')
    const [show, setShow] = useState(false)
+   const [showRecosList, setShowRecosList] = useState(false)
+   const [showRecosFollowingList, setShowRecosFollowingList] = useState(false)
    const [inviteShow, setInviteShow] = useState(false)
    const [isAdmin, setIsAdmin] = useState(false)
 
@@ -136,7 +152,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                         size='sm'
                         onClick={(_) => setInviteShow(true)}
                      >
-                        Add Team Member
+                        Invitar a Equipo
                      </Button>
                   </Col>
                </Row>
@@ -168,8 +184,50 @@ const ServiceInfo = ({ selectedService, history }) => {
                key={category}
             >{`${category}--`}</p>
          ))}
+         {service.recos.length > 0 && (
+            // <Card className='p-3 my-3'>
+            <Row className='mb-2'>
+               <Col>
+                  <RecosListModal
+                     show={showRecosList}
+                     setShow={setShowRecosList}
+                     userArray={service.recos}
+                     title={'Recomendaciones'}
+                  />
+                  <p
+                     className='m-0'
+                     key={'recomendaciones'}
+                     style={styles.ref}
+                     onClick={(_) => setShowRecosList(true)}
+                  >
+                     <strong>{'Recomendaciones:'}</strong>
+                     {` ${service.recos.length}`}
+                  </p>
+               </Col>
+               {service.recosFollowing && (
+                  <Col>
+                     <RecosListModal
+                        show={showRecosFollowingList}
+                        setShow={setShowRecosFollowingList}
+                        userArray={service.recosFollowing}
+                        title={'Amigos'}
+                     />
+                     <p
+                        className='m-0'
+                        key={'amigos'}
+                        style={styles.ref}
+                        onClick={(_) => setShowRecosFollowingList(true)}
+                     >
+                        <strong>{'Amigos:'}</strong>
+                        {` ${service.recosFollowing.length}`}
+                     </p>
+                  </Col>
+               )}
+            </Row>
+            // </Card>
+         )}
          <p>{service.description}</p>
-
+         <hr />
          <p className='mb-1' style={{ fontWeight: 800 }}>
             Equipo:
          </p>
@@ -201,6 +259,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                </Col>
             ))}
          </Row>
+         <hr />
          <Row>
             <p className='mb-1' style={{ fontWeight: 800 }}>
                Telefonos:
@@ -223,7 +282,13 @@ const ServiceInfo = ({ selectedService, history }) => {
                   </p>
                   <p
                      className='my-1'
-                     style={{ display: 'inline-block', fontWeight: 600 }}
+                     style={styles.link}
+                     key={service.instagram}
+                     onClick={(_) =>
+                        window.open(
+                           `https://www.instagram.com/${service.instagram}`
+                        )
+                     }
                   >{`:  @${service.instagram}`}</p>
                </div>
             )}
@@ -235,7 +300,9 @@ const ServiceInfo = ({ selectedService, history }) => {
                   </p>
                   <p
                      className='my-1'
-                     style={{ display: 'inline-block', fontWeight: 600 }}
+                     style={styles.link}
+                     key={service.webpage}
+                     onClick={(_) => window.open(`https://${service.webpage}`)}
                   >{`:  ${service.webpage}`}</p>
                </div>
             )}
