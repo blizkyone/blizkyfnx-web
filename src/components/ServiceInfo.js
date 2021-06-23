@@ -79,6 +79,10 @@ const ServiceInfo = ({ selectedService, history }) => {
       }
    }
 
+   const handleClickOnUser = (id) => {
+      history.push(`/user/${id}/profile`)
+   }
+
    const noUserModal = () => (
       <Modal show={show} onHide={(_) => setShow(false)}>
          <Modal.Header>
@@ -99,11 +103,13 @@ const ServiceInfo = ({ selectedService, history }) => {
    ) : (
       <Col>
          {noUserModal()}
-         <InviteToTeamModal
-            selectedService={selectedService}
-            show={inviteShow}
-            setShow={setInviteShow}
-         />
+         {isAdmin && (
+            <InviteToTeamModal
+               selectedService={selectedService}
+               show={inviteShow}
+               setShow={setInviteShow}
+            />
+         )}
          {isAdmin && (
             <Card className='mb-3 p-3'>
                <Row>
@@ -192,6 +198,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                      show={showRecosList}
                      setShow={setShowRecosList}
                      userArray={service.recos}
+                     handleClickOnUser={handleClickOnUser}
                      title={'Recomendaciones'}
                   />
                   <p
@@ -210,6 +217,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                         show={showRecosFollowingList}
                         setShow={setShowRecosFollowingList}
                         userArray={service.recosFollowing}
+                        handleClickOnUser={handleClickOnUser}
                         title={'Amigos'}
                      />
                      <p
@@ -232,7 +240,7 @@ const ServiceInfo = ({ selectedService, history }) => {
             Equipo:
          </p>
          <Row>
-            {service.team.map((user) => (
+            {service.team.map((user, i) => (
                <Col
                   sm={5}
                   className='m-1 d-flex flex-row justify-content-between align-items-center'
@@ -241,7 +249,7 @@ const ServiceInfo = ({ selectedService, history }) => {
                   <div>
                      <p className='m-1'>{`${user.position}:`}</p>
                      <p
-                        key={user.user._id}
+                        key={`${user.user._id}1`}
                         className='m-1'
                         style={styles.user}
                         onClick={(_) =>

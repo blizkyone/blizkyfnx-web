@@ -1,10 +1,20 @@
 import React, { useEffect } from 'react'
+import Radium from 'radium'
 import { Card, ListGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    getNotifications,
    seeNotifications,
 } from '../actions/notificationActions'
+
+const styles = {
+   textButton: {
+      fontWeight: 600,
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+}
 
 const NotificationScreen = ({ history }) => {
    const dispatch = useDispatch()
@@ -25,7 +35,8 @@ const NotificationScreen = ({ history }) => {
                <ListGroup.Item key={not._id}>
                   <p>
                      <span
-                        style={{ fontWeight: 600 }}
+                        key={not._id}
+                        style={styles.textButton}
                         onClick={(_) =>
                            history.push(`/user/${not.about_user._id}/profile`)
                         }
@@ -39,7 +50,8 @@ const NotificationScreen = ({ history }) => {
                <ListGroup.Item key={not._id}>
                   <p>
                      <span
-                        style={{ fontWeight: 600 }}
+                        key={not._id}
+                        style={styles.textButton}
                         onClick={(_) =>
                            history.push(`/user/${not.about_user._id}/profile`)
                         }
@@ -52,7 +64,7 @@ const NotificationScreen = ({ history }) => {
             return (
                <ListGroup.Item key={not._id}>
                   <p>
-                     <span style={{ fontWeight: 600 }}>
+                     <span key={not._id} style={styles.textButton}>
                         {not.about_service.name}
                      </span>
                      {` ${not.message}`}
@@ -71,4 +83,4 @@ const NotificationScreen = ({ history }) => {
    )
 }
 
-export default NotificationScreen
+export default Radium(NotificationScreen)

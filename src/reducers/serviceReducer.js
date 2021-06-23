@@ -48,7 +48,7 @@ export const serviceProfileReducer = (
          team: [],
          phoneArray: [],
          recos: [],
-         recosFollowing: [],
+         // recosFollowing: [],
       },
    },
    action

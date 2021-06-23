@@ -76,6 +76,11 @@ const ButtonDisplay = ({ user }) => {
             {noUserModal()}
          </>
       )
+
+   if (userInfo && userInfo._id === user.user._id) {
+      return null
+   }
+
    switch (user.status) {
       case 'none':
          return (

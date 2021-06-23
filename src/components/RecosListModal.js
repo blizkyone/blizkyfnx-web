@@ -1,24 +1,37 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import Radium from 'radium'
 import { Modal, ListGroup } from 'react-bootstrap'
 import ButtonDisplayUserProfile from './ButtonDisplayUserProfile'
 
-const RecosListModal = ({ show, setShow, userArray, title }) => {
-   console.log(userArray)
-   const { userInfo } = useSelector((state) => state.userLogin)
+const styles = {
+   username: {
+      flex: 1,
+      ':hover': {
+         cursor: 'pointer',
+      },
+   },
+}
+
+const RecosListModal = ({
+   show,
+   setShow,
+   userArray,
+   title,
+   handleClickOnUser,
+}) => {
    return (
       <Modal show={show} onHide={(_) => setShow(false)}>
          <Modal.Header>{title}</Modal.Header>
          <Modal.Body>
             <ListGroup>
-               {userArray.map((user) => (
+               {userArray.map((user, i) => (
                   <ListGroup.Item key={user._id} className='d-flex flex-row'>
                      <p
-                        style={{ flex: 1 }}
+                        key={i}
+                        style={styles.username}
+                        onClick={(_) => handleClickOnUser(user._id)}
                      >{`${user.name} ${user.familyName}`}</p>
-                     {user._id !== userInfo._id && (
-                        <ButtonDisplayUserProfile user={user} />
-                     )}
+                     <ButtonDisplayUserProfile user={user} />
                   </ListGroup.Item>
                ))}
             </ListGroup>
@@ -27,4 +40,4 @@ const RecosListModal = ({ show, setShow, userArray, title }) => {
    )
 }
 
-export default RecosListModal
+export default Radium(RecosListModal)

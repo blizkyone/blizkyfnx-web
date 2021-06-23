@@ -74,6 +74,11 @@ const ButtonDisplayUserProfile = ({ user }) => {
             {noUserModal()}
          </>
       )
+
+   if (userInfo && userInfo._id === user._id) {
+      return null
+   }
+
    switch (user.status) {
       case 'none':
          return (
