@@ -35,8 +35,10 @@ import {
    notificationsMarkAsSeenReducer,
    notificationsGetListReducer,
 } from './reducers/notificationsReducers'
+import { authGoogleReducer } from './reducers/authReducers'
 
 const reducer = combineReducers({
+   authGoogle: authGoogleReducer,
    notificationsIfPending: notificationsIfPendingReducer,
    notificationsMarkAsSeen: notificationsMarkAsSeenReducer,
    notificationsGetList: notificationsGetListReducer,

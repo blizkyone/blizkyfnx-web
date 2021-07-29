@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { logout, login } from '../actions/userActions'
+import { googleAuth } from '../actions/authActions'
 import { ifPendingNotifications } from '../actions/notificationActions'
 
 const Header = () => {
@@ -21,7 +22,12 @@ const Header = () => {
    const dispatch = useDispatch()
 
    const userLogin = useSelector((state) => state.userLogin)
-   const { userInfo } = userLogin
+   const { userInfo, loading } = userLogin
+   const {
+      loading: googleLoading,
+      success: googleSuccess,
+      error: googleError,
+   } = useSelector((state) => state.searchLocation)
    const { city, region } = useSelector((state) => state.searchLocation)
    const { pending } = useSelector((state) => state.notificationsIfPending)
    const { success } = useSelector((state) => state.notificationsMarkAsSeen)
@@ -40,6 +46,24 @@ const Header = () => {
       e.preventDefault()
       if (!email || !password) return
       dispatch(login(email, password))
+   }
+
+   const handleGoogleAuth = () => {
+      window.open(
+         'https://localhost:5001/api/auth/google',
+         '_self',
+         'width=500,height=600'
+      )
+      // dispatch(googleAuth())
+   }
+
+   const handleFacebookAuth = () => {
+      window.open(
+         'https://localhost:5001/api/auth/facebook',
+         '_self',
+         'width=500,height=600'
+      )
+      // dispatch(googleAuth())
    }
 
    return (
@@ -120,7 +144,37 @@ const Header = () => {
                         className='mx-1'
                         style={{ height: '2.4rem' }}
                      >
-                        Sign In
+                        {loading ? (
+                           <Spinner animation='border' size='sm' />
+                        ) : (
+                           'Sign In'
+                        )}
+                     </Button>
+
+                     {/* <Button
+                        size='sm'
+                        className='mx-1'
+                        style={{ height: '2.4rem' }}
+                        onClick={handleGoogleAuth}
+                     >
+                        {googleLoading ? (
+                           <Spinner animation='border' size='sm' />
+                        ) : (
+                           'Google'
+                        )}
+                     </Button> */}
+
+                     <Button
+                        size='sm'
+                        className='mx-1'
+                        style={{ height: '2.4rem' }}
+                        onClick={handleFacebookAuth}
+                     >
+                        {googleLoading ? (
+                           <Spinner animation='border' size='sm' />
+                        ) : (
+                           'Facebook'
+                        )}
                      </Button>
 
                      <LinkContainer to='/register'>
